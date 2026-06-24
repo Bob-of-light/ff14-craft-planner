@@ -47,7 +47,7 @@ export default function App() {
       </header>
 
       <main className="flex-1 flex gap-4 px-4 py-4 overflow-hidden">
-        <section className="flex-[3] min-w-0 overflow-y-auto">
+        <section className="flex-1 min-w-0 overflow-y-auto">
           <FavoritesPanel
             favorites={favorites}
             onRemove={removeFavorite}

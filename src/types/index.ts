@@ -45,3 +45,11 @@ export interface PriceInfo {
   worldName: string | null;
   loading: boolean;
 }
+
+export interface GatheringInfo {
+  itemId: number;
+  job: string;
+  action: string;
+  zone: string;
+  level: number;
+}
