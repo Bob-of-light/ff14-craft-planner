@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CraftingTree from './CraftingTree';
+import PriceTooltip from './PriceTooltip';
 import type { TreeNode, FavoriteItem as FavoriteItemType } from '../types';
 
 interface FavoriteItemProps {
   item: FavoriteItemType;
   onRemove: (id: number) => void;
   onTreeChange: (id: number, tree: TreeNode) => void;
+  onCountChange: (id: number, count: number) => void;
 }
 
-export default function FavoriteItem({ item, onRemove, onTreeChange }: FavoriteItemProps) {
+export default function FavoriteItem({ item, onRemove, onTreeChange, onCountChange }: FavoriteItemProps) {
   const [collapsed, setCollapsed] = useState(false);
   const {
     attributes,
@@ -49,12 +51,28 @@ export default function FavoriteItem({ item, onRemove, onTreeChange }: FavoriteI
         >
           {collapsed ? '\u25B6' : '\u25BC'}
         </button>
-        <span className="text-white text-sm font-medium truncate flex-1 ml-1 mr-2">
-          {item.name}
+        <PriceTooltip itemId={item.id} side="bottom">
+          <span className="text-white text-sm font-medium truncate cursor-help ml-1">
+            {item.name}
+          </span>
+        </PriceTooltip>
+        <span className="flex items-center gap-1 shrink-0">
+          <input
+            type="number"
+            min="1"
+            value={item.count}
+            onChange={(e) => {
+              const val = parseInt(e.target.value, 10);
+              if (!isNaN(val) && val >= 1) onCountChange(item.id, val);
+            }}
+            className="w-12 px-1.5 py-0.5 bg-gray-700 border border-gray-500 rounded
+                       text-white text-xs text-center
+                       focus:outline-none focus:border-blue-500"
+          />
         </span>
         <button
           onClick={() => onRemove(item.id)}
-          className="text-gray-500 hover:text-red-400 text-sm px-2 transition-colors"
+          className="text-gray-500 hover:text-red-400 text-sm px-2 transition-colors ml-auto"
           title="移除"
         >
           &times;
@@ -71,6 +89,7 @@ export default function FavoriteItem({ item, onRemove, onTreeChange }: FavoriteI
         <CraftingTree
           tree={item.tree}
           itemName={item.name}
+          count={item.count}
           onTreeChange={(tree) => onTreeChange(item.id, tree)}
         />
       )}

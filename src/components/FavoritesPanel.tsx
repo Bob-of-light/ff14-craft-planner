@@ -19,6 +19,7 @@ interface FavoritesPanelProps {
   onRemove: (id: number) => void;
   onReorder: (from: number, to: number) => void;
   onTreeChange: (id: number, tree: TreeNode) => void;
+  onCountChange: (id: number, count: number) => void;
 }
 
 export default function FavoritesPanel({
@@ -26,6 +27,7 @@ export default function FavoritesPanel({
   onRemove,
   onReorder,
   onTreeChange,
+  onCountChange,
 }: FavoritesPanelProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -59,6 +61,7 @@ export default function FavoritesPanel({
               item={item}
               onRemove={onRemove}
               onTreeChange={onTreeChange}
+              onCountChange={onCountChange}
             />
           ))}
         </SortableContext>

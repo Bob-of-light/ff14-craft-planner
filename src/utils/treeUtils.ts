@@ -59,9 +59,11 @@ export function mergeMaterialMaps(
 }
 
 export function collectAllBaseMaterials(
-  trees: TreeNode[]
+  inputs: { tree: TreeNode; count: number }[]
 ): MaterialTotal[] {
-  const entries = trees.filter(Boolean).map((tree) => collectBaseMaterials(tree, 1));
+  const entries = inputs
+    .filter((i): i is { tree: TreeNode; count: number } => !!i.tree)
+    .map(({ tree, count }) => collectBaseMaterials(tree, count));
   const { map, names } = mergeMaterialMaps(entries);
 
   return Array.from(map.entries())

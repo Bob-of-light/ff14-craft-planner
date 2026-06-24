@@ -28,6 +28,7 @@ export interface TreeNode {
 export interface FavoriteItem {
   id: number;
   name: string;
+  count: number;
   tree: TreeNode | null;
   loading: boolean;
 }

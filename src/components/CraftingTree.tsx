@@ -6,6 +6,7 @@ import type { TreeNode as TreeNodeType } from '../types';
 interface CraftingTreeProps {
   tree: TreeNodeType;
   itemName: string;
+  count: number;
   onTreeChange: (tree: TreeNodeType) => void;
 }
 
@@ -19,7 +20,7 @@ function cloneAndUpdate(node: TreeNodeType, itemId: number, value: number): Tree
   };
 }
 
-export default function CraftingTree({ tree, itemName, onTreeChange }: CraftingTreeProps) {
+export default function CraftingTree({ tree, itemName, count, onTreeChange }: CraftingTreeProps) {
   const handleUserInput = useCallback((itemId: number, value: number) => {
     const next = cloneAndUpdate(tree, itemId, value);
     onTreeChange(next);
@@ -36,7 +37,7 @@ export default function CraftingTree({ tree, itemName, onTreeChange }: CraftingT
         <TreeNode
           key={`${child.itemId}-${i}`}
           node={child}
-          multiplier={1}
+          multiplier={count}
           onUserInput={handleUserInput}
           indent={1}
           isLast={i === visibleChildren.length - 1}

@@ -30,7 +30,7 @@ async function loadRecipes(): Promise<{ recipes: Recipe[]; byResult: Map<number,
   const byResult = new Map<number, Recipe[]>();
 
   const recipes: Recipe[] = raw
-    .filter((r) => !r.companyCraft && typeof r.id !== 'string')
+    .filter((r) => typeof r.result === 'number')
     .map((r) => ({
       itemId: r.result,
       resultId: r.result,

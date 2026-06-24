@@ -7,7 +7,7 @@ export function useFavorites() {
   const addFavorite = useCallback((id: number, name: string) => {
     setFavorites((prev) => {
       if (prev.some((f) => f.id === id)) return prev;
-      return [...prev, { id, name, tree: null, loading: true }];
+      return [...prev, { id, name, count: 1, tree: null, loading: true }];
     });
   }, []);
 
@@ -21,6 +21,12 @@ export function useFavorites() {
     );
   }, []);
 
+  const updateCount = useCallback((id: number, count: number) => {
+    setFavorites((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, count } : f))
+    );
+  }, []);
+
   const reorder = useCallback((from: number, to: number) => {
     setFavorites((prev) => {
       const next = [...prev];
@@ -30,5 +36,5 @@ export function useFavorites() {
     });
   }, []);
 
-  return { favorites, addFavorite, removeFavorite, updateTree, reorder, setFavorites };
+  return { favorites, addFavorite, removeFavorite, updateTree, updateCount, reorder, setFavorites };
 }

@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import type { FavoriteItem } from '../types';
 import { collectAllBaseMaterials } from '../utils/treeUtils';
+import PriceTooltip from './PriceTooltip';
 
 interface MaterialSummaryProps {
   favorites: FavoriteItem[];
@@ -24,13 +25,13 @@ function exportToCsv(materials: { name: string; totalRequired: number }[]) {
 
 export default function MaterialSummary({ favorites }: MaterialSummaryProps) {
   const materials = useMemo(() => {
-    const trees = favorites
+    const inputs = favorites
       .filter((f): f is FavoriteItem & { tree: NonNullable<FavoriteItem['tree']> } =>
         !f.loading && f.tree !== null
       )
-      .map((f) => f.tree);
+      .map((f) => ({ tree: f.tree, count: f.count }));
 
-    return collectAllBaseMaterials(trees);
+    return collectAllBaseMaterials(inputs);
   }, [favorites]);
 
   const handleExport = useCallback(() => {
@@ -64,7 +65,9 @@ export default function MaterialSummary({ favorites }: MaterialSummaryProps) {
                        bg-gray-800/50 hover:bg-gray-700/50 transition-colors"
           >
             <span className="text-white text-xs truncate flex-1 mr-2">
-              {mat.name}
+              <PriceTooltip itemId={mat.itemId} side="right">
+                <span className="cursor-help">{mat.name}</span>
+              </PriceTooltip>
             </span>
             <span className="text-yellow-400 text-xs font-bold shrink-0">
               x{mat.totalRequired}

@@ -11,7 +11,7 @@ import type { TreeNode, WikiItem } from './types';
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const { results, loading } = useSearch(searchQuery);
-  const { favorites, addFavorite, removeFavorite, updateTree, reorder } = useFavorites();
+  const { favorites, addFavorite, removeFavorite, updateTree, updateCount, reorder } = useFavorites();
 
   useCraftingTree(favorites, updateTree);
 
@@ -53,6 +53,7 @@ export default function App() {
             onRemove={removeFavorite}
             onReorder={reorder}
             onTreeChange={handleTreeChange}
+            onCountChange={updateCount}
           />
         </section>
 
